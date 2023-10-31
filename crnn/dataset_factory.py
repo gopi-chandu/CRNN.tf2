@@ -101,17 +101,20 @@ class DatasetBuilder:
         return concatenated_ds
 
     def _decode_img(self, filename, label):
-        img = tf.io.read_file(filename)
-        img = tf.io.decode_jpeg(img, channels=self.img_shape[-1])
-        if self.preserve_aspect_ratio:
-            img_shape = tf.shape(img)
-            scale_factor = self.img_shape[0] / img_shape[0]
-            img_width = scale_factor * tf.cast(img_shape[1], tf.float64)
-            img_width = tf.cast(img_width, tf.int32)
-        else:
-            img_width = self.img_shape[1]
-        img = tf.image.resize(img, (self.img_shape[0], img_width)) / 255.0
-        return img, label
+        try :
+            img = tf.io.read_file(filename)
+            img = tf.io.decode_jpeg(img, channels=self.img_shape[-1])
+            if self.preserve_aspect_ratio:
+                img_shape = tf.shape(img)
+                scale_factor = self.img_shape[0] / img_shape[0]
+                img_width = scale_factor * tf.cast(img_shape[1], tf.float64)
+                img_width = tf.cast(img_width, tf.int32)
+            else:
+                img_width = self.img_shape[1]
+            img = tf.image.resize(img, (self.img_shape[0], img_width)) / 255.0
+            return img, label
+        except:
+            print(f"Skipping corrupt image: {filename}")
 
     def _filter_img(self, img, label):
         img_shape = tf.shape(img)

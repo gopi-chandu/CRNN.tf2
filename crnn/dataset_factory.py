@@ -21,7 +21,8 @@ class Dataset(tf.data.TextLineDataset):
     def parse_line(self, line):
         line = tf.strings.strip(line)
         img_relative_path, label = self.parse_func(line)
-        img_path = tf.strings.join([self.dirname, os.sep, img_relative_path])
+        # img_path = tf.strings.join([self.dirname, os.sep, img_relative_path])
+        img_path = tf.strings.join(['/kaggle/input/mjsynth/mnt/ramdisk/max/90kDICT32px', os.sep, img_relative_path])
         return img_path, label
 
 

@@ -56,16 +56,17 @@ with strategy.scope():
     )
 
 model.summary()
-
+import time
 model_prefix = "{epoch}_{val_loss:.4f}_{val_sequence_accuracy:.4f}"
 model_path = f"{args.save_dir}/{model_prefix}.h5"
 callbacks = [
     keras.callbacks.ModelCheckpoint(model_path, save_weights_only=True),
+    keras.callbacks.ModelCheckpoint("best_model.hdf5"+str(time.time()), monitor='loss', verbose=1,
+    save_best_only=True, save_weights_only=True, mode='auto', period=1),
     keras.callbacks.TensorBoard(
         log_dir=f"{args.save_dir}/logs", **config["tensorboard"]
     ),
 ]
-
 model.fit(
     train_ds,
     epochs=config["epochs"],

@@ -33,5 +33,5 @@ eval:
     dataset_builder:
         <<: *ds_builder
     ann_paths:
-        - '/datasets/ICDAR/2013/Challenge2_Test_Task3_gt.txt'
+        - '/kaggle/input/mjsynth-annotations-file-sample/test.txt'
     batch_size: 128
